@@ -1,0 +1,7 @@
+{% if messages %}
+    <div class="container pt-4" aria-label="Notifications">
+        {% for message in messages %}
+            <div class="alert {% if message.level_tag == 'error' %}alert-danger{% elif message.level_tag == 'success' %}alert-success{% elif message.level_tag == 'warning' %}alert-warning{% else %}alert-info{% endif %}" role="{% if message.level_tag == 'error' %}alert{% else %}status{% endif %}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}

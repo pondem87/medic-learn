@@ -1,0 +1,48 @@
+name: Checks
+on: [push, pull_request]
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17.6
+        env:
+          POSTGRES_USER: medic
+          POSTGRES_PASSWORD: medic-test
+          POSTGRES_DB: medic
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U medic -d medic"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+      rabbitmq:
+        image: rabbitmq:4.1.4-management
+        env:
+          RABBITMQ_DEFAULT_USER: medic
+          RABBITMQ_DEFAULT_PASS: medic-test
+        ports: ["5672:5672"]
+        options: >-
+          --health-cmd "rabbitmq-diagnostics -q ping"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      DJANGO_SECRET_KEY: ci-only-secret-not-for-deployment-12345678
+      PROOF_KEY: ci-only-proof-key-not-for-deployment-12345678
+      DATABASE_URL: postgres://medic:medic-test@localhost:5432/medic
+      RABBITMQ_URL: amqp://medic:medic-test@localhost:5672/%2F
+      RUN_BROKER_TESTS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.21"
+          python-version: "3.12.14"
+      - run: uv sync --locked
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy medic_learn config
+      - run: uv run python manage.py check
+      - run: uv run python manage.py makemigrations --check --dry-run
+      - run: uv run python manage.py migrate
+      - run: uv run pytest
+      - run: uv run python manage.py spectacular --file /tmp/schema.yaml --validate --fail-on-warn
+      - run: uv run python manage.py collectstatic --noinput
+      - run: uv run python scripts/check_docs.py

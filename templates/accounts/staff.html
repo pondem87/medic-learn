@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Account review{% endblock %}
+{% block page_header %}{% include 'components/page_header.html' with title='Account review' only %}{% endblock %}
+{% block content %}
+    <div class="container py-5">
+        <p class="mb-4">Review profiles and manage account access.</p>
+        <div class="row g-4">
+            {% for account in accounts %}
+                <div class="col-lg-6">{% include 'components/account_review_card.html' with account=account %}</div>
+            {% empty %}
+                <div class="col-12"><p class="bg-light p-4" role="status">There are no accounts to review.</p></div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

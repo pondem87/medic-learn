@@ -1,0 +1,15 @@
+{% load static %}
+<section class="site-hero position-relative d-flex align-items-center">
+    <img class="hero-image" src="{% static image|default:'vendor/elearning/img/carousel-1.jpg' %}" alt="" {% if secondary_slide %}loading="lazy"{% else %}fetchpriority="high"{% endif %}>
+    <div class="container position-relative py-5">
+        <div class="col-lg-8 col-xl-7">
+            <p class="hero-eyebrow text-uppercase fw-bold mb-3">{{ eyebrow }}</p>
+            {% if secondary_slide %}<h2 class="display-3 text-white mb-4">{{ heading }}</h2>{% else %}<h1 class="display-3 text-white mb-4">{{ heading }}</h1>{% endif %}
+            <p class="fs-5 text-white mb-4 pb-2">{{ description }}</p>
+            <div class="d-flex flex-wrap gap-3">
+                <a href="{{ primary_url }}" class="btn btn-primary py-3 px-5">{{ primary_label }}</a>
+                <a href="{{ secondary_url }}" class="btn btn-light py-3 px-5">{{ secondary_label }}</a>
+            </div>
+        </div>
+    </div>
+</section>

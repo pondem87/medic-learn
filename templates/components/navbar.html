@@ -1,0 +1,38 @@
+{% load static %}
+{% with current=request.resolver_match.url_name %}
+<nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0" aria-label="Main navigation">
+    <a href="{% url 'home' %}" class="navbar-brand d-flex align-items-center gap-3 px-3 px-xl-5">
+        <img class="site-logo" src="{% static 'Meded_Botswana_Logo_Icon_150px.png' %}" alt="" width="48" height="48">
+        <span class="fw-bold">MedEd Botswana</span>
+    </a>
+    <button type="button" class="navbar-toggler me-3" aria-controls="site-navigation" aria-expanded="true" aria-label="Toggle navigation" data-nav-toggle hidden>
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse" id="site-navigation">
+        <div class="navbar-nav ms-auto p-3 p-lg-0 align-items-lg-center">
+            <a href="{% url 'home' %}" class="nav-item nav-link{% if current == 'home' %} active{% endif %}"{% if current == 'home' %} aria-current="page"{% endif %}>Home</a>
+            {% if user.is_authenticated %}
+                {% if user.state == 'verified' %}
+                    <a href="{% url 'profile' %}" class="nav-item nav-link{% if current == 'profile' %} active{% endif %}"{% if current == 'profile' %} aria-current="page"{% endif %}>Profile</a>
+                    {% if user.profile.role == 'staff' %}
+                        <a href="{% url 'staff' %}" class="nav-item nav-link{% if current == 'staff' %} active{% endif %}"{% if current == 'staff' %} aria-current="page"{% endif %}>Review accounts</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'verify' %}" class="nav-item nav-link{% if current == 'verify' %} active{% endif %}"{% if current == 'verify' %} aria-current="page"{% endif %}>Verify email</a>
+                {% endif %}
+                <form method="post" action="{% url 'logout' %}" class="nav-item">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link nav-signout">Sign out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-item nav-link{% if current == 'login' %} active{% endif %}"{% if current == 'login' %} aria-current="page"{% endif %}>Sign in</a>
+            {% endif %}
+        </div>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-primary nav-join d-flex align-items-center justify-content-center gap-3 px-4 px-xl-5"{% if current == 'register' %} aria-current="page"{% endif %}>
+                Join Now {% include 'components/icon.html' with name='arrow' only %}
+            </a>
+        {% endif %}
+    </div>
+</nav>
+{% endwith %}

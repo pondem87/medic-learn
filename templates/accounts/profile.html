@@ -1,0 +1,17 @@
+{% extends 'accounts/form.html' %}
+{% block form_intro %}
+    <h2 class="h4 mb-3">Introduce yourself</h2>
+    <p>Update your details and submit your profile when you’re ready for review.</p>
+    <div class="d-flex flex-wrap gap-2 mb-4" aria-label="Profile status">
+        <span class="badge bg-dark">{{ user.profile.role|title }}</span>
+        <span class="badge profile-status">{{ user.profile.validation|title }}</span>
+    </div>
+    {% if user.profile.review_reason %}<div class="alert alert-info"><strong>Review feedback:</strong> {{ user.profile.review_reason }}</div>{% endif %}
+{% endblock %}
+{% block submit_label %}Save profile{% endblock %}
+{% block form_footer %}
+    <form method="post" action="{% url 'submit' %}" class="mt-4">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-primary w-100 py-3">Submit for review</button>
+    </form>
+{% endblock %}

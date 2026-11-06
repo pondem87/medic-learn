@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block page_header %}{% include 'components/page_header.html' with title=title only %}{% endblock %}
+{% block content %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-xl-6">
+                <section class="account-panel bg-light p-4 p-sm-5">
+                    {% block form_intro %}
+                        {% if request.resolver_match.url_name == 'register' %}
+                            <h2 class="h4 mb-3">Start your journey</h2>
+                            <p class="mb-4">Join MedEd Botswana as a learner or trainer. We’ll send a code to verify your email.</p>
+                        {% else %}
+                            <h2 class="h4 mb-3">Welcome back</h2>
+                            <p class="mb-4">Sign in with your email address to continue.</p>
+                        {% endif %}
+                    {% endblock %}
+                    <form method="post" class="account-form">
+                        {% csrf_token %}
+                        {% include 'components/form_fields.html' with form=form only %}
+                        {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+                        <button type="submit" class="btn btn-primary w-100 py-3">{% block submit_label %}{% if request.resolver_match.url_name == 'register' %}Create account{% else %}Sign in{% endif %}{% endblock %}</button>
+                    </form>
+                    {% block form_footer %}
+                        <p class="text-center mt-4 mb-0">
+                            {% if request.resolver_match.url_name == 'register' %}Already have an account? <a href="{% url 'login' %}">Sign in</a>{% else %}New to MedEd Botswana? <a href="{% url 'register' %}">Join Now</a>{% endif %}
+                        </p>
+                    {% endblock %}
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

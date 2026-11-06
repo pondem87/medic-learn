@@ -1,0 +1,29 @@
+{% load static %}
+<footer class="container-fluid bg-dark text-light footer mt-auto pt-5">
+    <div class="container">
+        <div class="row g-4 pb-4">
+            <div class="col-md-7">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <img class="site-logo" src="{% static 'Meded_Botswana_Logo_Icon_150px.png' %}" alt="" width="48" height="48" loading="lazy">
+                    <h2 class="h4 text-white mb-0">MedEd Botswana</h2>
+                </div>
+                <p class="mb-0">Continuing medical education for health professionals.</p>
+            </div>
+            <div class="col-md-5">
+                <nav class="d-flex flex-wrap gap-4 justify-content-md-end" aria-label="Footer navigation">
+                    <a href="{% url 'home' %}">Home</a>
+                    {% if user.is_authenticated %}
+                        {% if user.state == 'verified' %}<a href="{% url 'profile' %}">Your profile</a>{% else %}<a href="{% url 'verify' %}">Verify email</a>{% endif %}
+                    {% else %}
+                        <a href="{% url 'register' %}">Join Now</a>
+                        <a href="{% url 'login' %}">Sign in</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </div>
+        <div class="copyright d-flex flex-wrap justify-content-between gap-3">
+            <span>&copy; {% now 'Y' %} MedEd Botswana. All rights reserved.</span>
+            <span>Designed by <a href="https://www.pfitztronic.co.bw">Pfitztronic</a></span>
+        </div>
+    </div>
+</footer>

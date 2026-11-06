@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'vendor/elearning/lib/animate/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/elearning/lib/owlcarousel/assets/owl.carousel.min.css' %}">
+{% endblock %}
+{% block extra_scripts %}
+    <script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'vendor/elearning/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'home-carousel.js' %}"></script>
+{% endblock %}
+{% block content %}
+    {% include 'components/home_carousel.html' %}
+
+    <section class="container-xxl py-5" aria-label="Learning and teaching benefits">
+        <div class="container">
+            <div class="row g-4">
+                {% include 'components/feature_card.html' with icon='book' title='Learn from specialists' description='Access training from a range of specialists, designed for doctors, nurses, and other health professionals.' only %}
+                {% include 'components/feature_card.html' with icon='check' title='Earn CPD points' description='Continue your professional development and earn CPD points while building your clinical knowledge and skills.' only %}
+                {% include 'components/feature_card.html' with icon='person' title='Teach with greater reach' description='Distribute your learning content to more health professionals while lowering the costs of delivering training.' only %}
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="container-xxl py-5 mb-5" aria-labelledby="about-heading">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <img class="img-fluid about-image" src="{% static 'vendor/elearning/img/about.jpg' %}" alt="Learner holding a stack of books" loading="lazy" width="600" height="600">
+                </div>
+                <div class="col-lg-6">
+                    <p class="section-title bg-white text-start text-primary pe-3">About us</p>
+                    <h2 id="about-heading" class="mb-4">Connecting health professionals with specialist knowledge</h2>
+                    <p>MedEd Botswana brings continuing medical education (CME) to doctors, nurses, and other health professionals. Learners will be able to access training from various specialists and earn continuing professional development (CPD) points as they grow their knowledge.</p>
+                    <p class="mb-4">For trainers and specialists, the platform offers a way to distribute learning content with greater reach and lower costs. Share your expertise and help more health professionals continue their development.</p>
+                    <a class="btn btn-primary py-3 px-5" href="{% url 'register' %}">Join Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

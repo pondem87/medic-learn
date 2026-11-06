@@ -1,0 +1,30 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="MedEd Botswana is a continuing medical education (CME) platform for doctors, nurses, and other health professionals. Learn from specialists, earn CPD points, and share training with greater reach at lower costs.">
+    <title>{% block title %}{{ title|default:'Welcome' }}{% endblock %} | MedEd Botswana</title>
+    <link rel="icon" type="image/png" sizes="70x70" href="{% static 'Meded_Botswana_Logo_Icon_70px.png' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'vendor/elearning/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/elearning/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'app.css' %}">
+    <script src="{% static 'app.js' %}" defer></script>
+    {% block extra_head %}{% endblock %}
+</head>
+<body id="top">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    {% include 'components/navbar.html' %}
+    <main id="main-content" tabindex="-1">
+        {% include 'components/messages.html' %}
+        {% block page_header %}{% endblock %}
+        {% block content %}{% endblock %}
+    </main>
+    {% include 'components/footer.html' %}
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

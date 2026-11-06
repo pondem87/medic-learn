@@ -1,0 +1,86 @@
+/* Application adaptations; upstream eLearning styles live in vendor/elearning. */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main { flex: 1; }
+[hidden] { display: none !important; }
+
+/* Keep the theme's turquoise, with darker text/buttons for readable contrast. */
+a { color: #007f8b; }
+a:hover { color: #005d66; }
+.text-primary:not(.header-carousel .text-primary) { color: #007f8b !important; }
+.btn-primary:not(.header-carousel .btn-primary) { background-color: #007f8b; border-color: #007f8b; }
+.btn-primary:not(.header-carousel .btn-primary):hover, .btn-primary:not(.header-carousel .btn-primary):focus { background-color: #005d66; border-color: #005d66; }
+.btn-outline-primary { color: #007f8b; border-color: #007f8b; }
+.btn-outline-primary:hover, .btn-outline-primary:focus { background: #007f8b; border-color: #007f8b; color: #fff; }
+
+:focus-visible { outline: 3px solid #007f8b; outline-offset: 4px; }
+.skip-link { position: fixed; top: -100px; left: 1rem; z-index: 1100; padding: 1rem; background: white; }
+.skip-link:focus { top: 1rem; }
+.site-icon { flex-shrink: 0; vertical-align: middle; }
+.site-logo { width: 48px; height: 48px; object-fit: contain; flex-shrink: 0; }
+.site-icon-large { width: 48px; height: 48px; }
+
+.navbar-light.sticky-top { top: 0; }
+.navbar-light .navbar-brand { color: #007f8b; font-family: 'Nunito', sans-serif; font-size: 1.65rem; }
+.navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link.active { color: #007f8b; }
+.nav-signout { background: transparent; border: 0; font: inherit; text-align: left; width: 100%; }
+.navbar-nav form { margin: 0; }
+.navbar-light .nav-join { min-height: 75px; height: auto; }
+
+.site-hero { min-height: 640px; background: var(--dark); isolation: isolate; }
+.hero-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.site-hero::before { content: ''; position: absolute; inset: 0; background: rgba(24, 29, 56, .75); z-index: -1; }
+.hero-eyebrow { color: #65e4ed; letter-spacing: .08em; }
+.about-image { width: 100%; max-height: 460px; object-fit: cover; }
+#about { scroll-margin-top: 90px; }
+.section-title.text-start::before,
+.section-title.text-start::after { left: 100%; z-index: auto; }
+.section-title.text-start::before { width: 40px; top: calc(50% - 4px); }
+.section-title.text-start::after { width: 60px; bottom: calc(50% - 4px); }
+.service-item:hover { background: #007f8b; }
+
+.account-panel { border-top: 4px solid var(--primary); }
+.profile-status { background: #d8f3f5; color: #16545a; }
+.form-field label { display: block; font-weight: 500; color: var(--dark); margin-bottom: .5rem; }
+.account-form input:not([type='hidden']):not([type='checkbox']),
+.account-form select, .account-form textarea {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    padding: .85rem 1rem;
+    color: var(--dark);
+    background: #fff;
+    border: 1px solid #99adb1;
+    border-radius: 0;
+    font: inherit;
+}
+.account-form textarea { resize: vertical; }
+.account-form input[type='checkbox'] { width: 1.2rem; height: 1.2rem; margin-top: .25rem; flex-shrink: 0; accent-color: #007f8b; }
+.account-form [aria-invalid='true'] { border-color: #b02a37 !important; }
+.errorlist { color: #a52834; margin: .5rem 0 0; padding-left: 1.25rem; }
+.alert .errorlist { margin-top: 0; }
+.footer a { color: var(--light); }
+.footer a:hover, .footer a:focus { text-decoration: underline; }
+.footer .copyright a { text-decoration: underline; text-underline-offset: .2em; }
+.footer :focus-visible, .site-hero :focus-visible, .page-header :focus-visible { outline-color: #65e4ed; }
+
+@media (max-width: 991.98px) {
+    .navbar-collapse { flex-basis: 100%; }
+    .navbar-light .nav-join { min-height: 56px; }
+    .site-hero { min-height: 560px; }
+}
+
+@media (max-width: 575.98px) {
+    .navbar-brand .site-logo { width: 36px; height: 36px; }
+    .navbar-light .navbar-brand { font-size: 1.2rem; gap: .5rem !important; }
+    .site-hero { min-height: 520px; }
+    .site-hero .display-3 { font-size: 2.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+}

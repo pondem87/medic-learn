@@ -1,0 +1,76 @@
+ 
+
+ => PREMIUM TEMPLATE LICENSES BY HTML Codex
+
+      When you purchase a premium item from us, you're actually purchasing a license to use that item. The licenses authenticate purchasers to use our items under certain conditions. All of our premium items are covered by “Pro Single” and “Pro Multiple” licenses.
+
+
+ => PRO SINGLE LICENSE
+
+      1. The Single License grants you, the purchaser, an ongoing, non-exclusive, worldwide license to make use of the item you have purchased.
+
+      2. You are licensed to use the Item to create one End Product for yourself or for one client (a “single application”), and the End Product can be distributed for Free.
+
+      3. YOU CAN...
+     
+         1. Create one End Product for a client, transfer that End Product to your client, charge them for your services. The license is then transferred to the client.
+
+         2. Make unlimited copies of the single End Product as long as the End Product is distributed for free.
+ 
+         3. Modify or manipulate the Item or combine the Item with other works and make a derivative work from it. The resulting works are subject to the terms of this license. This clause applies to extracting single components from the Item and using it in derivative works as well.
+
+      4.YOU CANNOT...
+
+         1. Sell the End Product except to one client.
+
+         2. Re-distribute the Item’s source, modified or not, even if the Item is modified.
+
+         3. Use the Item in any application allowing an End User to customize the Item, like “build it yourself” or “theme generators”.
+
+         4. Allow the End User of the End Product to access the Item’s source and use it separately from the End Product.
+
+      5. If an Item contains code, images, or content sourced from elsewhere under a different license, that item retains its original license. The license for the code, images, or content will be noted by the HTML Codex in that Item description. You are responsible for adhering to the original license of the code, image, or content if necessary. Eg: Some Item contains premium stock photos which are not distributed with the Item. You need to purchase them separately from the corresponding stock photo website.
+
+      6. This license can be terminated if you breach it and you lose the right to distribute the End Product until the Item has been fully removed from the End Product.
+
+      7. HTML Codex retains ownership of the Item, but grants you the license on these terms. This license is between HTML Codex and you.
+
+
+ => PRO MULTIPLE LICENSE
+
+      1. The Multiple License grants you, the purchaser, an ongoing, non-exclusive, worldwide license to make use of the item you have purchased.
+
+      2. You are licensed to use the Item to create multiple End Products for yourself or for multiple clients and the End Product can be distributed for Free.
+
+      3. YOU CAN...
+
+         1. Create multiple End Products for multiple clients, transfer that End Products to your clients, charge them for your services. The license is then transferred to the clients. The equivalent of the Single License is granted to the clients. They do not assume the multiple use nature of the Multiple License.
+
+         2. Make multiple copies of the End Products as long as the End Products is distributed for free.
+
+         3. Modify or manipulate the Item or combine the Item with other works and make a derivative work from it. The resulting works are subject to the terms of this license. This clause applies to extracting single components from the Item and using it in derivative works as well.
+
+      4.YOU CANNOT...
+
+         1. Sell the End Product except to clients.
+
+         2. Re-distribute the Item’s source, modified or not, even if the Item is modified.
+
+         3. Use the Item in any application allowing an End User to customize the Item, like “build it yourself” or “theme generators”.
+
+         4. Allow the End User of the End Product to access the Item’s source and use it separately from the End Product.
+
+      5. If an Item contains code, images, or content sourced from elsewhere under a different license, that item retains its original license. The license for the code, images, or content will be noted by the HTML Codex in that Item description. You are responsible for adhering to the original license of the code, image, or content if necessary. Eg: Some Item contains premium stock photos which are not distributed with the Item. You need to purchase them separately from the corresponding stock photo website.
+
+      6. This license can be terminated if you breach it and you lose the right to distribute the End Product until the Item has been fully removed from the End Product.
+
+      7. HTML Codex retains ownership of the Item, but grants you the license on these terms. This license is between HTML Codex and you.
+
+
+ => DEFINITAIOS
+
+      Item is the purchased digital work.
+
+      End Product is a customized implementation of the Item.
+
+      End User is a user of the End Product.

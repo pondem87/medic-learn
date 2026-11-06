@@ -1,0 +1,16 @@
+{% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+{% endif %}
+{% for hidden in form.hidden_fields %}{{ hidden }}{{ hidden.errors }}{% endfor %}
+{% for field in form.visible_fields %}
+    <div class="form-field mb-4{% if field.errors %} has-errors{% endif %}">
+        {% if field.widget_type == 'checkbox' %}
+            <div class="d-flex align-items-start gap-2">{{ field }} {{ field.label_tag }}</div>
+        {% else %}
+            {{ field.label_tag }}
+            {{ field }}
+        {% endif %}
+        {% if field.help_text %}<div class="form-text" id="{{ field.auto_id }}_helptext">{{ field.help_text|safe }}</div>{% endif %}
+        {{ field.errors }}
+    </div>
+{% endfor %}
