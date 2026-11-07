@@ -25,7 +25,6 @@ jobs:
           --health-interval 5s --health-timeout 5s --health-retries 20
     env:
       DJANGO_SECRET_KEY: ci-only-secret-not-for-deployment-12345678
-      PROOF_KEY: ci-only-proof-key-not-for-deployment-12345678
       DATABASE_URL: postgres://medic:medic-test@localhost:5432/medic
       RABBITMQ_URL: amqp://medic:medic-test@localhost:5672/%2F
       RUN_BROKER_TESTS: "1"
@@ -36,6 +35,21 @@ jobs:
           version: "0.12.21"
           python-version: "3.12.14"
       - run: uv sync --locked
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.2"
+      - run: terraform fmt -check -recursive infrastructure
+      - run: terraform -chdir=infrastructure/terraform init -backend=false -input=false
+      - run: terraform -chdir=infrastructure/terraform validate
+      - run: terraform -chdir=infrastructure/terraform test
+      - run: terraform -chdir=infrastructure/staging init -backend=false -input=false
+      - run: terraform -chdir=infrastructure/staging validate
+      - run: terraform -chdir=infrastructure/staging test
+      - run: terraform -chdir=infrastructure/state init -backend=false -input=false
+      - run: terraform -chdir=infrastructure/state validate
+      - run: terraform -chdir=infrastructure/state test
+      - run: docker build -f docker/Dockerfile -t medic-learn:ci .
+      - run: docker build -f docker/staging-backup.Dockerfile -t medic-learn-backup:ci .
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run mypy medic_learn config

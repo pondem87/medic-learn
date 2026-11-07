@@ -17,7 +17,7 @@
     <section class="container-xxl py-5" aria-label="Learning and teaching benefits">
         <div class="container">
             <div class="row g-4">
-                {% include 'components/feature_card.html' with icon='book' title='Learn from specialists' description='Access training from a range of specialists, designed for doctors, nurses, and other health professionals.' only %}
+                {% include 'components/feature_card.html' with icon='book' title='Learn from experienced peers' description='Access continuing education from a range of specialists, doctors, nurses, and other health professionals.' only %}
                 {% include 'components/feature_card.html' with icon='check' title='Earn CPD points' description='Continue your professional development and earn CPD points while building your clinical knowledge and skills.' only %}
                 {% include 'components/feature_card.html' with icon='person' title='Teach with greater reach' description='Distribute your learning content to more health professionals while lowering the costs of delivering training.' only %}
             </div>
@@ -28,12 +28,12 @@
         <div class="container">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-6">
-                    <img class="img-fluid about-image" src="{% static 'vendor/elearning/img/about.jpg' %}" alt="Learner holding a stack of books" loading="lazy" width="600" height="600">
+                    <img class="img-fluid about-image" src="{% static 'images/about-medic-learn.jpg' %}" alt="Two healthcare professionals reviewing information on a tablet" loading="lazy" width="600" height="789">
                 </div>
                 <div class="col-lg-6">
                     <p class="section-title bg-white text-start text-primary pe-3">About us</p>
-                    <h2 id="about-heading" class="mb-4">Connecting health professionals with specialist knowledge</h2>
-                    <p>MedEd Botswana brings continuing medical education (CME) to doctors, nurses, and other health professionals. Learners will be able to access training from various specialists and earn continuing professional development (CPD) points as they grow their knowledge.</p>
+                    <h2 id="about-heading" class="mb-4">Connecting health professionals with up to date knowledge</h2>
+                    <p>MedEd Botswana brings continuing medical education (CME) to doctors, nurses, and other health professionals. Learners will be able to access training from various specialists and experienced professionals and earn continuing professional development (CPD) points as they grow their knowledge.</p>
                     <p class="mb-4">For trainers and specialists, the platform offers a way to distribute learning content with greater reach and lower costs. Share your expertise and help more health professionals continue their development.</p>
                     <a class="btn btn-primary py-3 px-5" href="{% url 'register' %}">Join Now</a>
                 </div>

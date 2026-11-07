@@ -1,7 +1,8 @@
 # ADR 001 — Django authentication and messaging foundation
 
 **Date:** 2026-11-03
-**Status:** Accepted
+**Status:** Superseded for identity, role and proof policy by
+[ADR-002](002-cognito-and-verified-profiles.md); messaging decisions remain adopted.
 
 ## 1 Context
 

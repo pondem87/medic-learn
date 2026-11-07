@@ -1,0 +1,2 @@
+{% extends 'base.html' %}
+{% block content %}<div class="container py-5"><h1>Submit verification</h1><p>Professionals: provide your Botswana council and registration number. Students: upload a student card (JPEG, PNG or PDF, up to 10 MB). Cards are deleted after approval or rejection.</p><form method="post" enctype="multipart/form-data" action="{% url 'submit' %}">{% csrf_token %}{% include 'components/form_fields.html' with form=form only %}<button class="btn btn-primary" type="submit">Submit for review</button></form></div>{% endblock %}

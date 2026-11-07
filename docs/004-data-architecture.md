@@ -8,19 +8,22 @@ Profile is one-to-one and protected against orphaning through normal service cre
 
 ## 2 Persistence
 
-PostgreSQL stores users/profiles, proofs and issuance controls, event inbox/outbox,
-notifications, messages, normalized provider observations, web sessions and refresh blacklists.
-Django migrations define physical constraints. Conditional uniqueness permits only one ready proof.
-Database role privileges allow test database creation locally; production roles require separate setup.
+PostgreSQL stores profiles, councils, private evidence metadata, immutable activity,
+retryable operations, rate-limit counters, database sessions and messaging records.
+Cognito owns passwords/proofs. Local passwords are unusable. Historical proof and
+blacklist tables can remain but are not used for access. Issuer/subject uniquely
+identify external users. Session tokens are encrypted with a separate Fernet key.
+Student evidence uses private local storage or private S3, never public media URLs.
 
 ## 3 Integrity and lifecycle
 
-Row locks serialize account/proof transitions. Attempt reservations commit before proof consumption.
-Verification and account activation commit with their outbox event. Message dispatch claims commit
-before provider I/O; uncertain outcomes are retained without automatic resend.
-No proof plaintext enters persistent application records. SMTP recipients can see delivered proofs.
+Row locks and profile versions serialize decisions; audit writes share transactions.
+PostgreSQL triggers reject audit update/delete. Verified fields are staff-only;
+submitted council/number are claims until approval. Account restrictions and credential
+cutoffs reject stale access. Final decisions revoke evidence access immediately and
+schedule retryable deletion; interrupted uploads remain cleanup-addressable.
 
 ## 4 Open decisions
 
-Retention, archival, backup/recovery targets, and hard deletion are
-[OPEN-001-1](001-general-description.md#open-001-1); no destructive cleanup is scheduled.
+Evidence deletion after final decisions is defined. Other archival, backup/recovery
+and retention policies remain [OPEN-001-1](001-general-description.md#open-001-1).

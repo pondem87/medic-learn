@@ -5,39 +5,36 @@ from concurrent.futures import ThreadPoolExecutor
 import pytest
 from django.db import close_old_connections
 
+from medic_learn.accounts import services
 from medic_learn.accounts.domain import AccountError
-from medic_learn.accounts.models import User
-from medic_learn.events.models import Outbox
+from medic_learn.accounts.models import Council, User
 from medic_learn.events.services import connection, consume, enqueue, publish_pending, topology
 from medic_learn.messages.models import Message
 from medic_learn.messages.services import dispatch
 from medic_learn.notifications.services import disseminate
-from medic_learn.verification.services import issue, verify
 
 
 @pytest.mark.django_db(transaction=True)
-def test_concurrent_verification_has_one_winner():
-    import re
-
-    from django.core import mail
-
-    user = User.objects.create_user("race@example.com", "secret")
-    issue(user)
-    code = re.search(r"\b[0-9]{5}\b", mail.outbox[-1].body).group()
+def test_concurrent_profile_review_has_one_winner():
+    user = User.objects.create_user("race@example.com", state="verified")
+    user.profile.name = "Race"
+    user.profile.save()
+    staff = User.objects.create_superuser("reviewer@example.com")
+    council = Council.objects.create(name="Test council")
+    profile = services.submit(user, "professional", council.pk, "123")
 
     def attempt():
         close_old_connections()
         try:
-            verify(User.objects.get(pk=user.pk), code)
-            return "verified"
+            services.review(staff, user.pk, "review", profile.version, "Checking registry")
+            return "reviewing"
         except AccountError:
             return "rejected"
         finally:
             close_old_connections()
 
     with ThreadPoolExecutor(max_workers=2) as pool:
-        assert sorted(pool.map(lambda _: attempt(), range(2))) == ["rejected", "verified"]
-    assert Outbox.objects.count() == 1
+        assert sorted(pool.map(lambda _: attempt(), range(2))) == ["rejected", "reviewing"]
 
 
 @pytest.mark.skipif(

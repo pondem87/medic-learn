@@ -67,7 +67,6 @@ def test_registration_errors_preserve_values_and_csrf():
 @pytest.mark.parametrize(
     ("state", "staff", "route", "action"),
     [
-        ("registered", False, "verify", "resend"),
         ("verified", False, "profile", "submit"),
         ("verified", True, "staff", None),
     ],
@@ -75,8 +74,8 @@ def test_registration_errors_preserve_values_and_csrf():
 def test_account_pages_retain_post_forms_and_role_navigation(client, state, staff, route, action):
     user = User.objects.create_user("pages@example.com", "secret", state=state)
     if staff:
-        user.profile.role = "staff"
-        user.profile.save()
+        user.is_staff = True
+        user.save()
     client.force_login(user)
     response = client.get(reverse(route))
     assert response.status_code == 200
@@ -98,12 +97,22 @@ def test_account_pages_retain_post_forms_and_role_navigation(client, state, staf
 
 @pytest.mark.django_db
 @override_settings(ALLOWED_HOSTS=["testserver"])
-def test_sign_in_keeps_next_destination_and_non_field_errors(client):
-    User.objects.create_user("login@example.com", "secret", state="verified")
-    response = client.post(
-        reverse("login") + "?next=/profile/",
-        {"username": "login@example.com", "password": "incorrect", "next": "/profile/"},
-    )
+def test_sign_in_keeps_next_destination_and_errors(client):
+    from unittest.mock import patch
+
+    from medic_learn.accounts.domain import AccountError
+
+    with (
+        patch("medic_learn.accounts.web_auth.cipher"),
+        patch(
+            "medic_learn.accounts.cognito.authenticate",
+            side_effect=AccountError("invalid", "Invalid credentials"),
+        ),
+    ):
+        response = client.post(
+            reverse("login") + "?next=/profile/",
+            {"email": "login@example.com", "password": "incorrect", "next": "/profile/"},
+        )
     assert response.status_code == 200
     assert response.context["form"].non_field_errors()
     assert 'role="alert"' in response.content.decode()
@@ -111,8 +120,3 @@ def test_sign_in_keeps_next_destination_and_non_field_errors(client):
     assert any(
         field.get("name") == "next" and field["value"] == "/profile/" for field in page.inputs
     )
-    response = client.post(
-        reverse("login"),
-        {"username": "login@example.com", "password": "secret", "next": "/profile/"},
-    )
-    assert response.url == reverse("profile")

@@ -36,3 +36,6 @@ Concurrency tests must use real database transactions rather than SQLite substit
 
 See [ADR-001](../docs/decisions/001-django-foundation.md) for Django adapter boundaries,
 Python runtime state enforcement, and the narrower port of the Java messaging services.
+
+[ADR-002](../docs/decisions/002-cognito-and-verified-profiles.md) supersedes the
+identity/profile policy and documents the serialized external-operation exception.

@@ -19,6 +19,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         while True:
             try:
+                from medic_learn.accounts.operations import run_pending
+
+                run_pending()
                 publish_pending()
                 with connection() as conn:
                     channel = conn.channel()

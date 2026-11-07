@@ -1,0 +1,15 @@
+output "ecr_repository_url" { value = aws_ecr_repository.app.repository_url }
+output "backup_repository_url" { value = aws_ecr_repository.backup.repository_url }
+output "cluster_name" { value = aws_ecs_cluster.main.name }
+output "migration_task_definition" { value = aws_ecs_task_definition.app["migrate"].arn }
+output "private_subnet_ids" { value = aws_subnet.application[*].id }
+output "task_security_group_id" { value = aws_security_group.tasks.id }
+output "static_bucket" { value = aws_s3_bucket.assets["static"].id }
+output "media_bucket" { value = aws_s3_bucket.assets["media"].id }
+output "backup_bucket" { value = aws_s3_bucket.backup.id }
+output "static_url" { value = "https://${aws_cloudfront_distribution.static.domain_name}/static/" }
+output "cognito_domain" { value = "https://${local.oidc_domain}" }
+output "cognito_user_pool_id" { value = aws_cognito_user_pool.main.id }
+output "cognito_mobile_client_id" { value = aws_cognito_user_pool_client.mobile.id }
+output "application_urls" { value = [for domain in local.domains : "https://${domain}"] }
+output "application_secret_arn" { value = aws_secretsmanager_secret.app.arn }

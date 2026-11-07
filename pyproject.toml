@@ -5,18 +5,25 @@ description = "Medic Learn web and mobile API foundation"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
 dependencies = [
+    "boto3>=1.43.125",
+    "cryptography>=50.0.2",
     "django>=5.2,<5.3",
     "django-environ>=0.14.0",
+    "django-storages[s3]>=1.14.6",
     "djangorestframework>=3.18.3",
-    "djangorestframework-simplejwt>=5.5.1",
     "drf-spectacular>=0.30.0",
+    "gunicorn>=26.2.0",
     "httpx>=0.28.1",
     "pika>=1.4.4",
+    "pillow>=13.0.0",
     "psycopg[binary]>=3.3.7",
+    "pyjwt[crypto]>=2.15.1",
+    "pypdf>=7.0.0",
 ]
 
 [dependency-groups]
 dev = [
+    "boto3-stubs>=1.43.125",
     "django-stubs>=6.1.2",
     "djangorestframework-stubs>=3.18.2",
     "mypy>=2.4.1",
@@ -24,6 +31,7 @@ dev = [
     "pytest-django>=4.14.0",
     "ruff>=0.17.3",
     "types-pika>=1.2.0b1",
+    "types-pyyaml>=6.0.12.20261103",
 ]
 
 [tool.pytest.ini_options]

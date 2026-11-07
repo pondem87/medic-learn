@@ -1,44 +1,34 @@
 # MedEd Botswana
 
 Django web and mobile API foundation for learners, trainers, and staff.
-The current implementation provides email registration and verification, session/JWT login,
+The current implementation provides email registration and verification, Cognito-backed web/mobile login,
 profile review, account lifecycle management, and event-driven notification delivery.
 
 ## Setup
 
-Prerequisites: uv 0.12.21, Python 3.12.14, Docker Engine with Compose.
-Run commands from this directory. Django runs on the host; supporting services run in Docker.
+Run `uv sync --locked`, preserve the existing ignored `.env`, then start support
+services with `docker compose --env-file .env -f docker/compose.yaml up -d --wait`.
+Run `uv run python manage.py migrate`, `uv run python manage.py runserver`, and
+`uv run python manage.py runworker` in another terminal.
 
-```bash
-uv sync --locked
-cp .env.example .env
-# Replace DJANGO_SECRET_KEY and PROOF_KEY with separate random values.
-# Generate each with: uv run python -c 'import secrets; print(secrets.token_urlsafe(48))'
-docker compose --env-file .env -f docker/compose.yaml up -d --wait
-uv run python manage.py migrate
-uv run python manage.py createsuperuser
-uv run python manage.py runserver
-```
+Authentication requires separately configured AWS Cognito. Follow the
+[Cognito deployment and cutover guide](infrastructure/README.md) for infrastructure,
+secrets, explicit identity linking, staff bootstrap, registry choices and mobile PKCE.
+Use the [staging deployment guide](infrastructure/staging/README.md) for live
+signed-in testing with an isolated Cognito pool and containerized data services.
+Do not use `createsuperuser` to create a local password; authentication is Cognito-only.
+Existing passwords/sessions are invalidated by migration; account data is retained.
 
-An ignored `.env` with generated secrets has already been created in this workspace.
-Do not overwrite it when continuing this installation. It contains local development credentials.
-Start a separate terminal for the worker:
-
-```bash
-uv run python manage.py runworker
-```
-
-Visit the application at http://127.0.0.1:8000, Mailpit at http://127.0.0.1:8025,
-and RabbitMQ management at http://127.0.0.1:15673 (local user `medic`).
-Use `/staff/` for review/lifecycle actions; `/admin/` is a read-only account inspector.
-Email verification codes appear only in the delivered email, not API responses.
+App: http://127.0.0.1:8000, Mailpit: http://127.0.0.1:8025,
+RabbitMQ: http://127.0.0.1:15673. Mailpit handles application notifications;
+Cognito sends identity emails. Missing Cognito settings fail login closed.
 
 ## Web templates
 
 The home, registration, sign-in, verification, profile, and staff review pages share
 the supplied HTML Codex eLearning theme. `templates/base.html` loads the common
 styles and layout; `templates/components/` contains reusable navigation, footer,
-hero, page header, feature cards, account review cards, messages, and form fields.
+hero, page header, feature cards, messages, and form fields.
 Extend the base layout for new pages, or `templates/accounts/form.html` for account
 forms using its `form_intro`, `submit_label`, and `form_footer` blocks. Include
 components with explicit context; form-containing components also need the CSRF
@@ -66,30 +56,24 @@ does not yet implement training delivery or CPD tracking.
 
 ## Web and mobile interfaces
 
-Web routes: `/register/`, `/login/`, `/verify/`, `/profile/`, `/staff/`.
-All web mutations require POST and a CSRF token. Logout is POST-only.
+Web uses Django sessions with custom Cognito registration, confirmation, sign-in,
+password reset and optional authenticator MFA screens. Mobile uses Cognito managed
+login with authorization code/PKCE; DRF accepts scoped Cognito access tokens.
+See the [complete interface contract](infrastructure/README.md#web-and-mobile-contracts).
 
-Mobile routes under `/api/v1/`:
-
-- `POST auth/register/`: email, password, name, learner/trainer role.
-- `POST auth/token/`: email and password; returns access and refresh tokens.
-- `POST auth/token/refresh/`: refresh token; rotates it.
-- `POST auth/logout/`: refresh token; requires bearer authentication.
-- `POST auth/verify/`: five-digit code; `POST auth/resend/` requests a new code.
-- `GET/PATCH me/`: verified account profile and editable profile fields.
-- `POST accounts/{uuid}/actions/`: submit, review, validate, return, role,
-  suspended, disabled, deleted, restore, approve_verification, deny_verification.
-  Review/lifecycle operations require a verified staff profile.
-
-Send `Authorization: Bearer <access>` for protected API operations.
-Registered accounts can access verification/resend/logout only.
-JWT logout revokes the refresh token; an already-issued access token lasts up to five minutes.
-Blocking an account invalidates both web sessions and all tokens immediately on their next use.
-Schema: `/api/schema/`; interactive reference: `/api/docs/`.
+Accounts have one professional/student category. Pending users can manage onboarding
+and their unverified bio. Approved students learn; approved professionals can switch
+between learner and trainer. Staff permissions are independent. Staff alone populate
+verified credentials, with reasons and activity history. Professional checks use a
+Botswana registry; student checks use a private card upload. Cards are deleted after
+approval/rejection. School contact and course delivery are deferred.
 
 ## Verification
 
 ```bash
+terraform -chdir=infrastructure/terraform init -backend=false
+terraform -chdir=infrastructure/terraform validate
+terraform -chdir=infrastructure/terraform test
 uv run ruff check .
 uv run ruff format --check .
 uv run mypy medic_learn config
@@ -121,9 +105,9 @@ SMTP acceptance is not confirmed recipient delivery. Uncertain dispatches are no
 resent. Dead-letter messages require operator inspection; preserve event IDs during replay.
 WhatsApp is disabled by default; configure the settings documented in [Docker setup](docker/README.md)
 and an approved Meta template before use. No real provider credentials are bundled.
-Production requires HTTPS, explicit hosts, external secrets, database/broker backup policy,
-and a static-file serving arrangement. Production deployment is not included.
-MediaMTX, password recovery, evidence uploads, retention jobs, and additional integrations are deferred.
+Terraform prepares HTTPS, Fargate, RDS/MQ, private media and CloudFront static hosting.
+Provisioning and deployment require the configured AWS account and a reviewed plan.
+MediaMTX, course delivery, school contact and additional integrations are deferred.
 
 ## License
 

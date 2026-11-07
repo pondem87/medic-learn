@@ -73,7 +73,11 @@ not apply.
 
 ## 5 Decision index
 
-- [ADR-001 — Django foundation](001-django-foundation.md): Accepted.
+- [ADR-001 — Django foundation](001-django-foundation.md): Superseded in part.
+- [ADR-002 — Cognito and profiles](002-cognito-and-verified-profiles.md): Accepted.
+
+- [ADR-003 — Terraform Fargate deployment](003-terraform-fargate-deployment.md): Accepted.
+- [ADR-004 — Persistent container data for staging](004-staging-fargate-data.md): Accepted.
 
 ## 6 Relationship to other documentation
 

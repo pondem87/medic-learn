@@ -12,9 +12,9 @@
 <a id="cap-2"></a>
 **CAP-2 — User communication**
 
-- **Purpose:** Deliver requested verification and optional notifications.
+- **Purpose:** Coordinate optional notifications; Cognito delivers identity proofs.
 - **Source:** [Communication requirements](002-detailed-requirements.md#req-2.1.1).
-- **Uses/modifies:** Proof, notification, and message information.
+- **Uses/modifies:** Notification and message information.
 
 ## 2 Information
 
@@ -22,8 +22,8 @@
 **INFO-1 — Account**
 
 - **Definition:** Email identity with an eligibility lifecycle.
-- **Associations:** Exactly one dependent profile; many proof issuances and messages.
-- **Types:** Profile role is staff, trainer, or learner; independent from account lifecycle.
+- **Associations:** Exactly one dependent profile; many verification activities and messages.
+- **Types:** One professional/student category with separate verification and learner/trainer eligibility. Staff authority is independent.
 
 ## 3 Value stream
 

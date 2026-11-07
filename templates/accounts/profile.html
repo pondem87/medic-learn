@@ -1,17 +1,18 @@
 {% extends 'accounts/form.html' %}
 {% block form_intro %}
-    <h2 class="h4 mb-3">Introduce yourself</h2>
-    <p>Update your details and submit your profile when you’re ready for review.</p>
-    <div class="d-flex flex-wrap gap-2 mb-4" aria-label="Profile status">
-        <span class="badge bg-dark">{{ user.profile.role|title }}</span>
-        <span class="badge profile-status">{{ user.profile.validation|title }}</span>
-    </div>
-    {% if user.profile.review_reason %}<div class="alert alert-info"><strong>Review feedback:</strong> {{ user.profile.review_reason }}</div>{% endif %}
+<h2 class="h4">Your profile</h2>
+<p>Status: {{ user.profile.get_category_display|default:'Choose a category below' }} — {{ user.profile.validation }}</p>
+{% if user.profile.review_reason %}<p role="status">Review feedback: {{ user.profile.review_reason }}</p>{% endif %}
+{% if user.profile.validation == 'validated' %}
+<h3 class="h5">Staff-verified details</h3><p>{{ user.profile.registered_name }}</p>
+{% if user.profile.category == 'professional' %}<p>{{ user.profile.profession }} · {{ user.profile.council }} · {{ user.profile.registration_number }}</p>{% else %}<p>{{ user.profile.programme }} · {{ user.profile.school }}</p>{% endif %}
+{% else %}<p>Your professional/student status has not been approved. Learning and training require verification.</p>{% endif %}
+<h3 class="h5">User-provided, unverified biography</h3><p>You can update your contact details and biography at any time. These are not verified credentials.</p>
 {% endblock %}
 {% block submit_label %}Save profile{% endblock %}
 {% block form_footer %}
-    <form method="post" action="{% url 'submit' %}" class="mt-4">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-outline-primary w-100 py-3">Submit for review</button>
-    </form>
+<p class="mt-4"><a href="{% url 'mfa-setup' %}">Set up optional authenticator MFA</a></p>
+{% if roles %}<form method="post" action="{% url 'switch-role' %}">{% csrf_token %}<label for="role">Current role</label><select name="role" id="role">{% for role in roles %}<option value="{{ role }}" {% if role == active_role %}selected{% endif %}>{{ role|title }}</option>{% endfor %}</select><button class="btn btn-outline-primary" type="submit">Switch role</button></form>{% endif %}
+<h3 class="h5 mt-4">Verify or change your status</h3><p>Submitting a new category or recheck removes current learning/training access until approved. For student verification, upload a JPEG, PNG or PDF card up to 10 MB. Cards are deleted after approval or rejection.</p>
+<form method="post" enctype="multipart/form-data" action="{% url 'submit' %}">{% csrf_token %}{% include 'components/form_fields.html' with form=submission_form only %}<button class="btn btn-outline-primary" type="submit">Submit for review</button></form>
 {% endblock %}

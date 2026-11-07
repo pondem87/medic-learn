@@ -1,0 +1,14 @@
+hosted_zone_id = "REPLACE-WITH-EXISTING-PUBLIC-ZONE-ID"
+environment = "development"
+region = "af-south-1"
+high_availability = false
+# Replace these illustrative URIs with the native application's registered deep links.
+mobile_callback_urls = ["meded://oauth/callback"]
+mobile_logout_urls = ["meded://oauth/logout"]
+# First provision infrastructure with services disabled, then publish the image,
+# set its digest and run migrations before enabling services.
+services_enabled = false
+# image_digest = "sha256:..."
+# Optional existing verified SES identity. Required for application email delivery.
+# email_identity_arn = "arn:aws:ses:af-south-1:ACCOUNT_ID:identity/mededbotswana.co.bw"
+email_from = "noreply@mededbotswana.co.bw"

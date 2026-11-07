@@ -1,0 +1,8 @@
+hosted_zone_id       = "REPLACE-WITH-EXISTING-PUBLIC-ZONE-ID"
+mobile_callback_urls = ["meded-staging://oauth/callback"]
+mobile_logout_urls   = ["meded-staging://oauth/logout"]
+services_enabled     = false
+# Set after publishing each image to staging ECR and before enabling services.
+# image_digest        = "sha256:..."
+# backup_image_digest = "sha256:..."
+# email_identity_arn  = "arn:aws:ses:af-south-1:ACCOUNT_ID:identity/mededbotswana.co.bw"

@@ -8,3 +8,17 @@ __pycache__/
 staticfiles/
 .coverage
 htmlcov/
+
+.private-evidence/
+
+# Terraform state and local deployment inputs contain sensitive values.
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfvars
+*.tfvars.json
+backend.hcl
+crash.log
+# Created only after the backend bucket exists, then used to migrate bootstrap state.
+infrastructure/state/backend.tf

@@ -1,0 +1,8 @@
+{% extends 'accounts/auth.html' %}
+{% block form_intro %}<h2 class="h4">Review {{ target.email }}</h2><p>{{ target.profile.category }} — {{ target.profile.validation }}</p><p>User-provided, unverified biography: {{ target.profile.biography }}</p><p>For professionals, check the council registry. For students, inspect the card and record programme and school. School contact is not currently required.</p>{% for item in evidence %}<p><a href="{% url 'evidence' item.pk %}">Download private student card</a></p>{% endfor %}{% endblock %}
+{% block submit_label %}Save review{% endblock %}
+{% block form_footer %}
+<h3 class="h5 mt-4">Account access and MFA recovery</h3><form method="post" action="{% url 'staff-action' target.pk %}">{% csrf_token %}<label for="access-action">Action</label><select id="access-action" name="action"><option value="suspended">Suspend</option><option value="disabled">Disable</option><option value="restore">Restore</option><option value="deleted">Delete (terminal)</option><option value="reset_mfa">Reset MFA after external identity check</option></select><label for="access-reason">Reason / identity check record</label><textarea id="access-reason" name="reason" required></textarea><button type="submit" class="btn btn-outline-primary">Apply action</button></form>
+<h3 class="h5 mt-4">Activity history</h3>{% for activity in activities %}<article class="border-bottom py-2"><p>{{ activity.occurred_at }} · {{ activity.actor.email|default:'System' }} · {{ activity.action }}</p><p>{{ activity.reason }}</p><pre class="text-wrap">Before: {{ activity.before }}
+After: {{ activity.after }}</pre></article>{% empty %}<p>No activity yet.</p>{% endfor %}
+{% endblock %}

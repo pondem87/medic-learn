@@ -10,7 +10,7 @@ Medical educational content and course workflows have not yet been specified.
 
 Users register with email, verify ownership, authenticate, and submit basic profiles.
 Staff review profiles and manage account eligibility. Communication services deliver
-verification codes and opted-in welcome messages.
+opted-in welcome messages; Cognito delivers identity codes.
 
 ## 3 Boundaries and open decisions
 

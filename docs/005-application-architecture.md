@@ -2,26 +2,34 @@
 
 ## 1 Components
 
-HTML forms/views and REST serializers/views call shared account and verification operations.
-Accounts owns identity/profile state. Verification owns codes and generation controls.
-Events owns durable envelopes and broker delivery. Notifications decides welcome-message eligibility.
-Messages owns dispatch; SMTP and WhatsApp implement the channel protocol.
+HTML/REST adapters call account application operations. Cognito owns identity;
+its adapter translates errors and verifies tokens. Accounts owns local eligibility,
+profiles, review, audit and retryable external operations. Private storage owns
+student-card I/O. General events, notifications and messages retain their boundaries.
+Historical email-proof tables have no runtime authentication service.
 
 ## 2 Flows
 
-1. Registration creates account/profile transactionally, then issues and sends email proof.
-2. Verification reserves an attempt; valid consumption, activation and event insertion are atomic.
-3. Worker publishes outbox, consumes/deduplicates events, captures notifications, and queues messages.
-4. Dispatcher claims each message before external I/O; acceptance is distinct from delivery.
+1. Web registers through Cognito then binds issuer/sub locally. Confirmation/login
+   reconcile interrupted local creation; email conflicts require explicit linking.
+2. Web completes password/MFA before creating a Django session; native mobile uses
+   managed login/code/PKCE and sends scoped Cognito access tokens to DRF.
+3. Users submit registry details or student evidence. Staff review with reason/version,
+   populate verified fields and approve, return, reject or revoke. Audit commits locally.
+4. Worker processes evidence deletion and Cognito access/MFA changes, then existing
+   outbox/broker/notification/message work. Failures remain inspectable and retryable.
 
 ## 3 Boundaries and failures
 
-Django adapters return safe codes/errors. Provider exceptions are not serialized.
-Database/broker failures leave pending outbox work retryable; malformed consumer work dead-letters.
-Profile roles never grant access to unverified or blocked accounts.
-The Python/Django boundary tradeoff is explicit in [ADR-001](decisions/001-django-foundation.md).
+Identity uses issuer/sub, never automatic email linkage. Local account restrictions
+apply on every authenticated request. Capability adapters must check VerifiedRole or
+require_role for current eligibility; onboarding endpoints allow pending users.
+Provider errors are safe; credentials never enter activity or operation payloads.
+[ADR-002](decisions/002-cognito-and-verified-profiles.md) documents transaction
+exceptions and revocation limits. No cross-provider atomicity is claimed.
 
-## 4 Limits
+## 4 Interfaces and limits
 
-The WhatsApp adapter sends approved templates and records inbound observations/statuses.
-It does not authenticate senders or execute inbound business actions. Media imports are deferred.
+See [web/mobile contracts](../infrastructure/README.md#web-and-mobile-contracts).
+No training delivery, CPD tracking, automated registry lookup or school contact is
+implemented. WhatsApp remains an optional notification/observation adapter.

@@ -14,7 +14,7 @@
             {% if user.is_authenticated %}
                 {% if user.state == 'verified' %}
                     <a href="{% url 'profile' %}" class="nav-item nav-link{% if current == 'profile' %} active{% endif %}"{% if current == 'profile' %} aria-current="page"{% endif %}>Profile</a>
-                    {% if user.profile.role == 'staff' %}
+                    {% if user.is_staff %}
                         <a href="{% url 'staff' %}" class="nav-item nav-link{% if current == 'staff' %} active{% endif %}"{% if current == 'staff' %} aria-current="page"{% endif %}>Review accounts</a>
                     {% endif %}
                 {% else %}

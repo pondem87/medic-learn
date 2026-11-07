@@ -1,0 +1,3 @@
+{% extends 'accounts/auth.html' %}
+{% block form_intro %}<h2 class="h4">Set up authenticator</h2><p>Sign in again before changing your security settings. If you lose your authenticator, contact staff for identity verification and recovery.</p>{% if secret %}<p>Enter this setup key in your authenticator app, then enter its six-digit code below.</p><code>{{ secret }}</code>{% endif %}{% endblock %}
+{% block form_footer %}<form method="post">{% csrf_token %}<input type="hidden" name="action" value="begin"><button type="submit" class="btn btn-outline-primary">Generate setup key</button></form>{% endblock %}

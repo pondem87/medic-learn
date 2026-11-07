@@ -1,0 +1,4 @@
+{% extends 'accounts/form.html' %}
+{% block form_intro %}<h2 class="h4">{{ title }}</h2>{% if request.resolver_match.url_name == 'register' %}<p>Choose professional or student status. Staff verification is required before learning or training.</p>{% endif %}{% endblock %}
+{% block submit_label %}Continue{% endblock %}
+{% block form_footer %}<p class="mt-4"><a href="{% url 'login' %}">Sign in</a> · <a href="{% url 'register' %}">Register</a> · <a href="{% url 'forgot-password' %}">Forgot password?</a> · <a href="{% url 'verify' %}">Confirm email</a></p>{% endblock %}

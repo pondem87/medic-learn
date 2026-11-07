@@ -1,5 +1,6 @@
 import hashlib
 import json
+import ssl
 import uuid
 
 import pika
@@ -16,6 +17,8 @@ def enqueue(topic, payload):
 
 def connection():
     params = pika.URLParameters(settings.RABBITMQ_URL)
+    if settings.RABBITMQ_URL.startswith("amqps://"):
+        params.ssl_options = pika.SSLOptions(ssl.create_default_context(), params.host)
     params.socket_timeout = 10
     params.blocked_connection_timeout = 10
     return pika.BlockingConnection(params)
@@ -24,12 +27,17 @@ def connection():
 def topology(channel):
     channel.exchange_declare(exchange="medic.events", exchange_type="topic", durable=True)
     channel.exchange_declare(exchange="medic.dead", exchange_type="fanout", durable=True)
-    channel.queue_declare(queue="medic.dead", durable=True)
+    channel.queue_declare(
+        queue="medic.dead", durable=True, arguments={"x-queue-type": settings.RABBITMQ_QUEUE_TYPE}
+    )
     channel.queue_bind(queue="medic.dead", exchange="medic.dead")
     channel.queue_declare(
         queue="medic.notifications",
         durable=True,
-        arguments={"x-dead-letter-exchange": "medic.dead"},
+        arguments={
+            "x-dead-letter-exchange": "medic.dead",
+            "x-queue-type": settings.RABBITMQ_QUEUE_TYPE,
+        },
     )
     channel.queue_bind(
         queue="medic.notifications", exchange="medic.events", routing_key="users.verified"

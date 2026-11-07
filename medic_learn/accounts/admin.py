@@ -21,7 +21,7 @@ class AccountAdmin(UserAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ("user", "role", "validation")
+    list_display = ("user", "category", "validation")
 
     def has_add_permission(self, request):
         return False
